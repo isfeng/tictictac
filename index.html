@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Time Circle</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
+    <script src="http://code.createjs.com/easeljs-0.6.0.min.js"></script>
+    <script src="javascripts/TimeCircle.js"></script>
+
+</head>
+<body onload="init();">
+    <div id="control" style="position:absolute">
+        <h6>Rotate X</h6>
+        <input id="rotatex_h" type="range" min="-500" max="500" value="230" step="1"/> <label id="rotatex_h_val"></label><br/>
+        <input id="rotatex_m" type="range" min="-500" max="500" value="500" step="1"/> <label id="rotatex_m_val"></label><br/>
+        <input id="rotatex_s" type="range" min="-500" max="500" value="-448" step="1"/> <label id="rotatex_s_val"></label><br/>
+        <h6>Radius</h6>
+        <input id="radius_h" type="range" min="100" max="2000" value="366" step="1"/> <label id="radius_h_val"></label><br/>
+        <input id="radius_m" type="range" min="100" max="2000" value="883" step="1"/> <label id="radius_m_val"></label><br/>
+        <input id="radius_s" type="range" min="100" max="2000" value="883" step="1"/> <label id="radius_s_val"></label><br/>
+        <h6>Focal Length</h6>
+        <input id="fl_h" type="range" min="250" max="1000" value="250" step="1"/> <label id="fl_h_val"></label><br/>
+        <input id="fl_m" type="range" min="250" max="1000" value="250" step="1"/> <label id="fl_m_val"></label><br/>
+        <input id="fl_s" type="range" min="250" max="1000" value="250" step="1"/> <label id="fl_s_val"></label><br/>
+        <h6>Vanishing Point X</h6>
+        <input id="vpx_h" type="range" min="0" max="0" value="477" step="1"/> <label id="vpx_h_val"></label><br/>
+        <input id="vpx_m" type="range" min="0" max="0" value="272" step="1"/> <label id="vpx_m_val"></label><br/>
+        <input id="vpx_s" type="range" min="0" max="0" value="1280" step="1"/> <label id="vpx_s_val"></label><br/>
+        <h6>Vanishing Point Y</h6>
+        <input id="vpy_h" type="range" min="0" max="0" value="0" step="1"/> <label id="vpy_h_val"></label><br/>
+        <input id="vpy_m" type="range" min="0" max="0" value="0" step="1"/> <label id="vpy_m_val"></label><br/>
+        <input id="vpy_s" type="range" min="0" max="0" value="0" step="1"/> <label id="vpy_s_val"></label><br/>
+    </div>
+    <div class="canvasHolder" style="position:ralative">
+        <canvas id="testCanvas"></canvas>
+    </div>
+
+    <script>
+    
+    function init() {
+        var canvas = document.getElementById("testCanvas");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        stage = new createjs.Stage(canvas);
+
+        $('vpx_h').set('max', canvas.width);
+        $('vpy_h').set('max', canvas.height);
+        $('vpy_h').set('value', canvas.height / 2);
+
+        $('vpx_m').set('max', canvas.width);
+        $('vpy_m').set('max', canvas.height);
+        $('vpy_m').set('value', canvas.height / 2);
+
+        $('vpx_s').set('max', canvas.width);
+        $('vpy_s').set('max', canvas.height);
+        $('vpy_s').set('value', canvas.height / 2);
+
+        hours = new TimeCircle(stage, {type:'hour'});        
+        minutes = new TimeCircle(stage, {type:'min'});        
+        seconds = new TimeCircle(stage, {type:'sec'});
+        
+        createjs.Ticker.addEventListener("tick", tick);
+        createjs.Ticker.setFPS(30);
+    }
+
+    function tick(event) {
+        hours.dx = $('rotatex_h').value.toInt();
+        $('rotatex_h_val').set('text', hours.dx);
+        hours.radius = $('radius_h').value.toInt();
+        $('radius_h_val').set('text', hours.radius);
+        hours.fl = $('fl_h').value.toInt();
+        $('fl_h_val').set('text', hours.fl);
+        hours.vpx = $('vpx_h').value.toInt();
+        $('vpx_h_val').set('text', hours.vpx);
+        hours.vpy = $('vpy_h').value.toInt();
+        $('vpy_h_val').set('text', hours.vpy);
+        hours.sync();
+
+        minutes.dx = $('rotatex_m').value.toInt();
+        $('rotatex_m_val').set('text', minutes.dx);
+        minutes.radius = $('radius_m').value.toInt();
+        $('radius_m_val').set('text', minutes.radius);
+        minutes.fl = $('fl_m').value.toInt();
+        $('fl_m_val').set('text', minutes.fl);
+        minutes.vpx = $('vpx_m').value.toInt();
+        $('vpx_m_val').set('text', minutes.vpx);
+        minutes.vpy = $('vpy_m').value.toInt();
+        $('vpy_m_val').set('text', minutes.vpy);
+        minutes.sync();
+
+        seconds.dx = $('rotatex_s').value.toInt();
+        $('rotatex_s_val').set('text', seconds.dx);
+        seconds.radius = $('radius_s').value.toInt();
+        $('radius_s_val').set('text', seconds.radius);
+        seconds.fl = $('fl_s').value.toInt();
+        $('fl_s_val').set('text', seconds.fl);
+        seconds.vpx = $('vpx_s').value.toInt();
+        $('vpx_s_val').set('text', seconds.vpx);
+        seconds.vpy = $('vpy_s').value.toInt();
+        $('vpy_s_val').set('text', seconds.vpy);
+        seconds.sync();
+
+        stage.update(event);
+
+    }
+
+    </script>
+</body>
+</html>
